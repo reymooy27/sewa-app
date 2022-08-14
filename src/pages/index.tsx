@@ -5,6 +5,7 @@ import { GetStaticProps } from 'next'
 import Header from "../components/Header";
 import SideBar from "../components/SideBar";
 import Card from "../components/Card";
+import { trpc } from "../utils/trpc";
 
 
 function Home({rents}) {
@@ -13,6 +14,10 @@ function Home({rents}) {
   const handleSignOut = async () => {
     await signOut();
   };
+
+  const allProducts = trpc.useQuery(['product.get-products'])
+
+  console.log(allProducts.data)
 
   return (
     <>
