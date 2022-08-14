@@ -8,7 +8,7 @@ import Card from "../components/Card";
 import { trpc } from "../utils/trpc";
 
 
-function Home({rents}) {
+function Home() {
   const { status } = useSession();
 
   const handleSignOut = async () => {
@@ -16,8 +16,6 @@ function Home({rents}) {
   };
 
   const allProducts = trpc.useQuery(['product.get-products'])
-
-  console.log(allProducts.data)
 
   return (
     <>
@@ -35,7 +33,7 @@ function Home({rents}) {
               <Header/>
               <div>
                 <div className='p-6 grid grid-cols-1 gap-x-5 gap-y-3 justify-items-center sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
-                  {rents.map((r)=>(
+                  {allProducts?.data?.map((r)=>(
                     <Card 
                     productName={r.name} 
                     href={`/rents/${r.id}`} 
@@ -61,16 +59,3 @@ function Home({rents}) {
 }
 
 export default Home;
-
-
-export const getStaticProps: GetStaticProps = async (ctx) => {
-
-  const data = await fetch('http://localhost:3000/api/rents')
-  .then(data=> data.json())
-
-  return {
-    props: {
-      rents: data
-    }
-  }
-}

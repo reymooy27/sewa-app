@@ -1,48 +1,29 @@
 import Head from "next/head";
-import React, { ReactElement, useCallback, useEffect, useState } from "react";
+import React, { ReactElement } from "react";
 import Card from "../components/Card";
 import Layout from "../components/layout";
+import { trpc } from "../utils/trpc";
 
 export default function Profile() {
 
-  const [myRents, setMyRents] = useState([])
-  const [loading, setLoading] = useState(false)
+  const myProducts = trpc.useQuery(['product.get-my-products'])
 
-  const fetchMyRents = useCallback(
-    async () => {
-      setLoading(true)
-      try {
-        const res = await fetch('http://localhost:3000/api/rents/my-rents')
-        const data = await res.json()
-        setMyRents(data)
-        setLoading(false)
-      } catch (error) {
-        setLoading(false)
-      }
-    },
-    [],
-  )
-
-  useEffect(() => {
-    fetchMyRents()
-  }, [fetchMyRents])
-  
   return (
     <>
       <Head>
         <title>Profile</title>
       </Head>
-      <h1>My rents</h1>
-      {loading ? <h1>Loading...</h1> : 
+      <h1>My products</h1>
+      {myProducts.isLoading ? <h1>Loading...</h1> : 
         <div className='p-6 grid grid-cols-1 gap-x-5 gap-y-3 justify-items-center sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
-          {myRents.length < 1 && <h1>No rents, create one</h1>}
-          {myRents.map((r)=>(
+          {myProducts?.data?.length! < 1 && <h1>No products, create one</h1>}
+          {myProducts?.data?.map((product)=>(
             <Card 
-            productName={r.name} 
-            href={`/rents/${r.id}`} 
-            key={r.id} 
-            userName={r?.user?.name} 
-            userImage={r?.user?.image}/>
+            productName={product.name} 
+            href={`/rents/${product.id}`} 
+            key={product.id} 
+            userName={product?.user?.name} 
+            userImage={product?.user?.image}/>
           ))}
         </div>
       }

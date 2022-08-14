@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Head from 'next/head'
+import { trpc } from "../../utils/trpc";
 
 export default function CreateRent() {
   const [name, setName] = useState<string>("");
@@ -7,6 +8,8 @@ export default function CreateRent() {
 
   const [isSubmitting, setIsSubmittting] = useState<boolean>(false)
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(false)
+
+  const mutation = trpc.useMutation(['product.create'])
 
   useEffect(()=>{
     if(name === '' && price === 0){
@@ -25,27 +28,19 @@ export default function CreateRent() {
       return
     }
 
-    await fetch('http://localhost:3000/api/rents/create', 
-    {
-      method: 'POST',
-      body:JSON.stringify({name, price}),
-      headers:{
-        'Content-Type': 'application/json'
+    mutation.mutate({name,price},{
+      onSuccess: (data)=>{
+        setIsSubmittting(false)
+        window.alert(data?.name)
+      },
+      onError: (error)=>{
+        setIsSubmittting(false)
+        window.alert(error)
       }
-    }
-    )
-    .then(async data=> {
-      setIsSubmittting(false)
-      window.alert(await data.json())
-    })
-    .catch(err=> {
-      setIsSubmittting(false)
-      window.alert(err)
     })
 
     setName('')
     setPrice(0)
-
   };
 
   return (
