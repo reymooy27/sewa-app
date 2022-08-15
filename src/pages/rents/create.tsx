@@ -4,7 +4,7 @@ import { trpc } from "../../utils/trpc";
 
 export default function CreateRent() {
   const [name, setName] = useState<string>("");
-  const [price, setPrice] = useState<number | string | undefined>(0);
+  const [price, setPrice] = useState<number>(0);
 
   const [isSubmitting, setIsSubmittting] = useState<boolean>(false)
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(false)
