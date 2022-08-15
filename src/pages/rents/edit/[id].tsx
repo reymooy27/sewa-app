@@ -1,32 +1,27 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
+import { trpc } from '../../../utils/trpc';
 
 export default function Edit() {
   const [name, setName] = useState<string>("");
-  const [price, setPrice] = useState<number | string | undefined>(0);
+  const [price, setPrice] = useState<number>(0);
 
   const [isSubmitting, setIsSubmittting] = useState<boolean>(false)
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(false)
-  const [data, setData] = useState([])
 
   const router = useRouter()
   const {id} = router.query
 
+  const product = trpc.useQuery(['product.get-product', {id}])
+
+  const mutation = trpc.useMutation('product.update')
+
 
   useEffect(() => {
-    const fetchData = async ()=>{
-      const res = await fetch(`http://localhost:3000/api/rents/${id}`)
-      const _data = await res.json()
-      setName(_data.name)
-      setPrice(_data.price)
-    } 
-
-    fetchData()
-  }, [id])
-  
-  console.log(data)
-
+    setName(product?.data?.name)
+    setPrice(product?.data?.price)
+  }, [product.data?.name, product.data?.price])
   
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
@@ -37,22 +32,15 @@ export default function Edit() {
       return
     }
 
-    await fetch(`http://localhost:3000/api/rents/edit/${id}`, 
-    {
-      method: 'PUT',
-      body:JSON.stringify({name, price}),
-      headers:{
-        'Content-Type': 'application/json'
-      }
-    }
-    )
-    .then(async data=> {
-      setIsSubmittting(false)
-      router.push('/profile')
-    })
-    .catch(err=> {
-      setIsSubmittting(false)
-      window.alert(err)
+    mutation.mutate({id, name, price},{
+      onSuccess(data, variables, context) {
+        setIsSubmittting(false)
+        router.push('/profile')
+      },
+      onError(error, variables, context) {
+        setIsSubmittting(false)
+        window.alert(error.message)
+      },
     })
   };
 

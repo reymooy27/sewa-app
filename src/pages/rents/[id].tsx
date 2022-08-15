@@ -1,9 +1,10 @@
-import React, {useCallback, useEffect,useState} from 'react'
+import React, {ReactElement} from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Layout from '../../components/layout'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { trpc } from '../../utils/trpc'
 
 export default function Rent() {
 
@@ -12,53 +13,35 @@ export default function Rent() {
   const router = useRouter()
   const {id} = router.query
   
-  const [rentData, setRentData] = useState({})
 
-  const fetchData = useCallback(
-    async () => {
-      try {
-      const res = await fetch(`http://localhost:3000/api/rents/${id}`)
-      const data = await res.json()
-      setRentData(data)
-    } catch (error) {
-      console.log(error)        
-    }
-    },
-    [id],
-  )
-
-  useEffect(() => {
-    fetchData()
-  }, [fetchData])
+  const product = trpc.useQuery(['product.get-product', {id}])
+  const mutation = trpc.useMutation('product.delete')
 
   const handleDelete = async ()=>{
-    await fetch(`http://localhost:3000/api/rents/delete/${id}`,
-      {
-        method: 'DELETE'
-      }
-    ).then(async res=>{
-      window.alert(await res.json())
-    }).catch(err=>{
-      window.alert(err)
+    mutation.mutate({id}, {
+      onSuccess(data, variables, context) {
+        window.alert(data)
+        router.push('/profile')
+      },
+      onError(error, variables, context) {
+        window.alert('error')
+      },
     })
   }
-
-  console.log(session?.user?.id)
-  console.log(rentData?.userId)
 
   return (
     <>
       <Head>
-        <title>{rentData?.name}</title>
+        <title>{product?.data?.name}</title>
       </Head>
       
       <div>
-        <p>{rentData?.name}</p>
-        <p>{rentData?.price?.toString()}</p>
-        <p>{rentData?.amount?.toString()}</p>
+        <p>{product?.data?.name}</p>
+        <p>{product?.data?.price?.toString()}</p>
+        <p>{product?.data?.amount?.toString()}</p>
       </div>
       
-      { session?.user?.id === rentData?.userId && 
+      { session?.user?.id === product?.data?.userId && 
       <>
         <div>
           <button onClick={handleDelete} className='w-[100px] h-[50px] bg-red-500'>Delete</button>
@@ -66,7 +49,7 @@ export default function Rent() {
         <Link href={`/rents/edit/${id}`}>
           <a>Edit</a>
         </Link>
-       </> 
+      </> 
       }
 
 
@@ -78,7 +61,7 @@ export default function Rent() {
 }
 
 
-Rent.getLayout = function getLayout(page){
+Rent.getLayout = function getLayout(page: ReactElement){
   return(
     <Layout>
       {page}
