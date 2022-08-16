@@ -35,6 +35,8 @@ export const productRouter = createRouter()
 })
 .query('get-my-products',{
   async resolve({ctx}){
+    if (!ctx.session) return 'You need to login'
+    
     const myProducts = ctx?.prisma?.rent.findMany(
     {
       where:{
@@ -61,9 +63,7 @@ export const productRouter = createRouter()
         price: z.number()
       }),
     async resolve({ input,ctx }) {
-      if (!ctx.session) {
-        return 'You need to login'
-      }
+      if (!ctx.session) return 'You need to login'
 
       const createdProduct = await ctx?.prisma?.rent.create({
         data:{
@@ -81,6 +81,8 @@ export const productRouter = createRouter()
       id: z.string()
     }),
     async resolve({input, ctx}){
+      if (!ctx.session) return 'You need to login'
+
       const product = await ctx?.prisma?.rent.findFirst({
         where:{
           id: input.id,
@@ -108,6 +110,8 @@ export const productRouter = createRouter()
       price: z.number()
     }),
     async resolve({input, ctx}){
+      if (!ctx.session) return 'You need to login'
+      
       await ctx?.prisma?.rent.update({
         where:{
           id: input.id
