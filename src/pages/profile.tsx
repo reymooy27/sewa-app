@@ -1,4 +1,6 @@
+import { useSession } from "next-auth/react";
 import Head from "next/head";
+import Link from "next/link";
 import React, { ReactElement } from "react";
 import Card from "../components/Card";
 import Layout from "../components/layout";
@@ -7,6 +9,8 @@ import { trpc } from "../utils/trpc";
 export default function Profile() {
 
   const myProducts = trpc.useQuery(['product.get-my-products'])
+  
+  const {data: session} = useSession()
 
   return (
     <>
@@ -27,6 +31,10 @@ export default function Profile() {
           ))}
         </div>
       }
+
+      {session && <Link href='/rents/create'>
+        <a className='block w-[200px] h-[40px] bg-yellow-400 p-1 rounded text-center'>Create Rent</a>
+      </Link>}
     </>
   );
 }
