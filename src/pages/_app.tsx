@@ -6,6 +6,7 @@ import React, { ReactElement, ReactNode } from "react";
 import { NextPage } from "next";
 import { withTRPC } from "@trpc/next";
 import { AppRouter } from "../server/routers/_app";
+import superjson from 'superjson';
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -81,6 +82,7 @@ export default withTRPC<AppRouter>({
        * @link https://react-query-v3.tanstack.com/reference/QueryClient
        */
       // queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } },
+      transformer: superjson
     };
   },
   /**
