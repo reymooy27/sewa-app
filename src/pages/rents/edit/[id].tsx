@@ -51,7 +51,9 @@ export default function Edit() {
     </Head>
 
     <div className="w-ful h-full flex justify-center items-center">
-      <form onSubmit={handleSubmit} className='bg-red-200 w-[50%] h-full flex flex-col p-3'>
+      <form 
+        onSubmit={handleSubmit} 
+        className='bg-red-200 w-[50%] h-full flex flex-col p-3'>
         <input
           className="w-full h-[60px] border-red-500 border-2 mt-2"
           placeholder="Name"
@@ -66,7 +68,9 @@ export default function Edit() {
           type='number'
           onChange={(e) => setPrice(Number(e.target.value))}
         />
-        <button disabled={buttonDisabled} className={`${buttonDisabled ? "bg-red-400" : "bg-yellow-400"} w-full h-60px mt-2`} >
+        <button 
+          disabled={buttonDisabled} 
+          className={`${buttonDisabled ? "bg-red-400" : "bg-yellow-400"} w-full h-60px mt-2`} >
           {isSubmitting ? 'Loading...' : "Submit"}
         </button>
       </form>
