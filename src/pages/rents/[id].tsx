@@ -34,28 +34,30 @@ export default function Rent() {
       <Head>
         <title>{product?.data?.name}</title>
       </Head>
-      
-      <div>
-        <p>{product?.data?.name}</p>
-        <p>{product?.data?.price?.toString()}</p>
-        <p>{product?.data?.amount?.toString()}</p>
-      </div>
-      
-      { session?.user?.id === product?.data?.userId && 
-      <>
-        <div>
-          <button onClick={handleDelete} className='w-[100px] h-[50px] bg-red-500'>Delete</button>
-        </div>
-        <Link href={`/rents/edit/${id}`}>
-          <a>Edit</a>
-        </Link>
-      </> 
+      { product.isLoading ? <h1>Loading...</h1> :
+        <>
+          <div>
+            <p>{product?.data?.name}</p>
+            <p>{product?.data?.price?.toString()}</p>
+            <p>{product?.data?.amount?.toString()}</p>
+          </div>
+          
+          { session?.user?.id === product?.data?.userId ? 
+            <>
+              <div>
+                <button onClick={handleDelete} className='w-[100px] h-[50px] bg-red-500'>Delete</button>
+              </div>
+              <Link href={`/rents/edit/${id}`}>
+                <a className='w-[100px] h-[50px] bg-yellow-500'>Edit</a>
+              </Link>
+            </> 
+            :
+            <div>
+              <button className='w-[100px] h-[50px] bg-green-500'>Rent</button>
+            </div>
+          }
+        </>
       }
-
-
-      {session && <div>
-        <button className='w-[100px] h-[50px] bg-green-500'>Rent</button>
-      </div>}
     </>
   )
 }
