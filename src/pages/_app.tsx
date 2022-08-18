@@ -10,6 +10,7 @@ import superjson from 'superjson';
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode
+  auth: boolean
 }
 
 type AppPropsWithLayout = AppProps & {
