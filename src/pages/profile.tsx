@@ -24,7 +24,7 @@ export default function Profile() {
           {myProducts?.data?.map((product)=>(
             <Card 
             productName={product.name} 
-            href={`/rents/${product.id}`} 
+            href={`/products/${product.id}`} 
             key={product.id} 
             userName={product?.user?.name} 
             userImage={product?.user?.image}/>
@@ -32,8 +32,8 @@ export default function Profile() {
         </div>
       }
 
-      {session && <Link href='/rents/create'>
-        <a className='block w-[200px] h-[40px] bg-yellow-400 p-1 rounded text-center'>Create Rent</a>
+      {session && <Link href='/products/create'>
+        <a className='block w-[200px] h-[40px] bg-yellow-400 p-1 rounded text-center'>Create Product</a>
       </Link>}
     </>
   );

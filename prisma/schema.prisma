@@ -45,10 +45,10 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  rent          Rent[]
+  product       Product[]
 }
 
-model Rent {
+model Product {
   id         String     @id @default(auto()) @map("_id") @db.ObjectId
   name       String
   price      Int
@@ -56,13 +56,13 @@ model Rent {
   available  Boolean?   @default(true)
   userId     String?    @db.ObjectId
   user       User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  category   Category[] @relation(fields: [categoryId], references: [id])
-  categoryId String[]   @db.ObjectId
+  category   Category[] @relation(fields: [categories], references: [id])
+  categories String[]   @db.ObjectId
 }
 
 model Category {
-  id     String   @id @default(auto()) @map("_id") @db.ObjectId
-  name   String
-  rent   Rent[]   @relation(fields: [rentId], references: [id])
-  rentId String[] @db.ObjectId
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  product  Product[] @relation(fields: [products], references: [id])
+  products String[]  @db.ObjectId
 }

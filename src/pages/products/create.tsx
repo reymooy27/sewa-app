@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Head from 'next/head'
 import { trpc } from "../../utils/trpc";
 
-export default function CreateRent() {
+export default function Create() {
   const [name, setName] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
 
@@ -75,4 +75,4 @@ export default function CreateRent() {
 }
 
 
-CreateRent.auth = true
+Create.auth = true

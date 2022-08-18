@@ -36,7 +36,7 @@ function Home() {
                   {allProducts?.data?.map((r)=>(
                     <Card 
                     productName={r.name} 
-                    href={`/rents/${r.id}`} 
+                    href={`/products/${r.id}`} 
                     key={r.id} 
                     userName={r?.user?.name} 
                     userImage={r?.user?.image}/>

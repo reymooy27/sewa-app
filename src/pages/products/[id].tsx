@@ -11,7 +11,7 @@ export default function Rent() {
   const {data: session} = useSession()
   
   const router = useRouter()
-  const {id} = router.query
+  const id = router.query.id as string
   
 
   const product = trpc.useQuery(['product.get-product', {id}])
@@ -29,10 +29,14 @@ export default function Rent() {
     })
   }
 
+  const handleRent = ()=>{
+    window.alert('rent')
+  }
+
   return (
     <>
       <Head>
-        <title>{product?.data?.name}</title>
+        <title>{product?.data?.name ? product?.data?.name : 'Loading...'}</title>
       </Head>
       { product.isLoading ? <h1>Loading...</h1> :
         <>
@@ -47,13 +51,13 @@ export default function Rent() {
               <div>
                 <button onClick={handleDelete} className='w-[100px] h-[50px] bg-red-500'>Delete</button>
               </div>
-              <Link href={`/rents/edit/${id}`}>
+              <Link href={`/products/edit/${id}`}>
                 <a className='w-[100px] h-[50px] bg-yellow-500'>Edit</a>
               </Link>
             </> 
             :
             <div>
-              <button className='w-[100px] h-[50px] bg-green-500'>Rent</button>
+              <button onClick={handleRent} className='w-[100px] h-[50px] bg-green-500'>Rent</button>
             </div>
           }
         </>

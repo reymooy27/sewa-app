@@ -5,7 +5,7 @@ export const productRouter = createRouter()
 
 .query('get-products',{
   async resolve({ctx}){
-    const allProducts = await ctx?.prisma?.rent.findMany({
+    const allProducts = await ctx?.prisma?.product.findMany({
       include:{
         user:{
           select:{
@@ -25,7 +25,7 @@ export const productRouter = createRouter()
     id: z.string()
   }),
   async resolve({input,ctx}){
-    const product = await ctx?.prisma?.rent.findUnique({
+    const product = await ctx?.prisma?.product.findUnique({
       where:{
         id: input.id
       }
@@ -37,7 +37,7 @@ export const productRouter = createRouter()
   async resolve({ctx}){
     if (!ctx.session) return 'You need to login'
     
-    const myProducts = ctx?.prisma?.rent.findMany(
+    const myProducts = ctx?.prisma?.product.findMany(
     {
       where:{
         userId: ctx?.session?.user?.id
@@ -65,7 +65,7 @@ export const productRouter = createRouter()
     async resolve({ input,ctx }) {
       if (!ctx.session) return 'You need to login'
 
-      const createdProduct = await ctx?.prisma?.rent.create({
+      const createdProduct = await ctx?.prisma?.product.create({
         data:{
           name: input.name,
           price: input.price,
@@ -83,7 +83,7 @@ export const productRouter = createRouter()
     async resolve({input, ctx}){
       if (!ctx.session) return 'You need to login'
 
-      const product = await ctx?.prisma?.rent.findFirst({
+      const product = await ctx?.prisma?.product.findFirst({
         where:{
           id: input.id,
           userId: ctx?.session?.user?.id
@@ -94,7 +94,7 @@ export const productRouter = createRouter()
         return 'You cannot delete this'
       }
 
-      await prisma?.rent.delete({
+      await prisma?.product.delete({
         where:{
           id: product?.id
         }
@@ -112,7 +112,7 @@ export const productRouter = createRouter()
     async resolve({input, ctx}){
       if (!ctx.session) return 'You need to login'
       
-      await ctx?.prisma?.rent.update({
+      await ctx?.prisma?.product.update({
         where:{
           id: input.id
         },
