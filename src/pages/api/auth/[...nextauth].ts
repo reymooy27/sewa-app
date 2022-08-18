@@ -29,7 +29,10 @@ export const authOptions: NextAuthOptions = {
       return baseUrl;
     },
     async session({session, token, user}){
-      session.user.id = user?.id
+      if (session !== undefined) {
+        session.user!.id = user?.id
+        return session
+      }
       return session
     }
   },

@@ -4,14 +4,14 @@ import React, { useEffect, useState } from 'react'
 import { trpc } from '../../../utils/trpc';
 
 export default function Edit() {
-  const [name, setName] = useState<string>("");
-  const [price, setPrice] = useState<number>(0);
+  const [name, setName] = useState<string | undefined>("");
+  const [price, setPrice] = useState<number | undefined>(0);
 
   const [isSubmitting, setIsSubmittting] = useState<boolean>(false)
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(false)
 
   const router = useRouter()
-  const {id} = router.query
+  const id = router.query.id as string
 
   const product = trpc.useQuery(['product.get-product', {id}])
 

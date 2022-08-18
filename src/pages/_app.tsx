@@ -9,7 +9,7 @@ import { AppRouter } from "../server/routers/_app";
 import superjson from 'superjson';
 
 export type NextPageWithLayout = NextPage & {
-  getLayout?: (page: ReactElement) => ReactNode
+  getLayout?: (page: ReactElement) => ReactElement
   auth: boolean
 }
 
