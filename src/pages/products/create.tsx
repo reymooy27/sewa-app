@@ -31,8 +31,7 @@ export default function Create() {
     mutation.mutate({name,price},{
       onSuccess: (data)=>{
         setIsSubmittting(false)
-        typeof data !== 'string' && window.alert(data?.name)
-        window.alert(data)
+        typeof data !== 'string' ? window.alert(data?.name) : window.alert(data)
       },
       onError: (error)=>{
         setIsSubmittting(false)
