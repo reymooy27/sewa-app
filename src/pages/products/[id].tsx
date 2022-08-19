@@ -16,6 +16,7 @@ export default function Rent() {
 
   const product = trpc.useQuery(['product.get-product', {id}])
   const mutation = trpc.useMutation('product.delete')
+  const orderMutation = trpc.useMutation('order.create')
 
   const handleDelete = async ()=>{
     mutation.mutate({id}, {
@@ -30,7 +31,18 @@ export default function Rent() {
   }
 
   const handleRent = ()=>{
-    window.alert('rent')
+    if(!session) return router.push('/login')
+    if(product !== undefined){
+      orderMutation.mutate({productId: id, orderToUserId: product.data?.userId}, {
+        onSuccess(data, variables, context) {
+          window.alert(data)
+        },
+        onError(error, variables, context) {
+          window.alert(error)
+        },
+      })
+    }
+    return
   }
 
   return (
