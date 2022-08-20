@@ -7,6 +7,7 @@ import { NextPage } from "next";
 import { withTRPC } from "@trpc/next";
 import { AppRouter } from "../server/routers/_app";
 import superjson from 'superjson';
+import { httpBatchLink } from '@trpc/client/links/httpBatchLink';
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactElement
@@ -73,17 +74,18 @@ function getBaseUrl() {
 
 export default withTRPC<AppRouter>({
   config({ ctx }) {
-    /**
-     * If you want to use SSR, you need to use the server's full URL
-     * @link https://trpc.io/docs/ssr
-     */
     return {
       url: `${getBaseUrl()}/api/trpc`,
       /**
        * @link https://react-query-v3.tanstack.com/reference/QueryClient
        */
       // queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } },
-      transformer: superjson
+      transformer: superjson,
+      links:[
+        httpBatchLink({
+          url: `${getBaseUrl()}/api/trpc`,
+        }),
+      ]
     };
   },
   /**
