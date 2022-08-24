@@ -1,10 +1,13 @@
-import React from "react";
+import React, { JSXElementConstructor, ReactElement } from "react";
 import Head from "next/head";
 import { useSession } from "next-auth/react";
 import Header from "../components/Header";
 import Card from "../components/Card";
 import { trpc } from "../utils/trpc";
-
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import CardContainer from "../components/CardContainer";
 
 function Home() {
   const { status } = useSession();
@@ -29,7 +32,7 @@ function Home() {
                   <h1 className="text-xl font-bold">
                     New Releases
                   </h1>
-                  <div className='flex gap-3 flex-wrap mt-[10px]'>
+                  <CardContainer>
                     {allProducts?.data?.map((r)=>(
                       <Card 
                       productName={r.name} 
@@ -38,7 +41,7 @@ function Home() {
                       userName={r?.user?.name!} 
                       userImage={r?.user?.image!}/>
                     ))}
-                  </div>
+                  </CardContainer>
                 </div>
                 }
 
@@ -54,19 +57,34 @@ export default Home;
 
 
 export function Banner() {
+  const settings = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: true
+};
   return (
-    <div 
-      className='w-full h-[120px] flex justify-center 
-      items-center p-2 mt-[20px]
-      bg-white text-black rounded shadow-md
-      '>
-      <h1>Banner</h1>
-    </div>
-  )
-}
-
-export function CardContainer(){
-  return(
-    <div>k</div>
+    <Slider {...settings} className='h-[220px] bg-white rounded shadow-md p-3 my-[20px]'>
+      <div>
+        <h3>1</h3>
+      </div>
+      <div>
+        <h3>2</h3>
+      </div>
+      <div>
+        <h3>3</h3>
+      </div>
+      <div>
+        <h3>4</h3>
+      </div>
+      <div>
+        <h3>5</h3>
+      </div>
+      <div>
+        <h3>6</h3>
+      </div>
+    </Slider>
   )
 }
