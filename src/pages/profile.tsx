@@ -3,6 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import React, { ReactElement } from "react";
 import Card from "../components/Card";
+import CardContainer from "../components/CardContainer";
 import Layout from "../components/layout";
 import { trpc } from "../utils/trpc";
 
@@ -20,7 +21,7 @@ export default function Profile() {
       </Head>
       <h1>My products</h1>
       {myProducts.isLoading ? <h1>Loading...</h1> : 
-        <div className='p-6 grid grid-cols-1 gap-x-5 gap-y-3 justify-items-center sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
+        <CardContainer>
           {myProducts?.data?.length! < 1 && <h1>No products, create one</h1>}
           {typeof myProducts !== 'string' && myProducts?.data?.map((product)=>(
             <Card 
@@ -30,7 +31,7 @@ export default function Profile() {
             userName={product?.user?.name!} 
             userImage={product?.user?.image!}/>
           ))}
-        </div>
+        </CardContainer>
       }
 
       {session && <Link href='/products/create'>
