@@ -25,7 +25,7 @@ function Login({}) {
       <div className="w-full h-full flex flex-col justify-center items-center">
         <h1 className="text-2xl">Login</h1>
         <button
-          className="bg-yellow-100 w-[200px] h-[60px] rounded"
+          className="bg-yellow-100 text-black w-[200px] h-[60px] rounded"
           onClick={handleSignInWithGoogle}
         >
           {loading ? "Loading" : "Login with Google"}

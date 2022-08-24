@@ -2,7 +2,6 @@ import React from "react";
 import Head from "next/head";
 import { useSession } from "next-auth/react";
 import Header from "../components/Header";
-import SideBar from "../components/SideBar";
 import Card from "../components/Card";
 import { trpc } from "../utils/trpc";
 
@@ -17,17 +16,20 @@ function Home() {
         <title>Home</title>
       </Head>
 
-      <div className="flex w-full h-full">
-        <SideBar/>
-        <div className="bg-red-300 w-full ml-0 h-screen flex flex-col lg:w-[80%] lg:ml-[20%]">
+        <div className="w-full h-screen relative">
           {status === "loading" ? (
             <h1>Loading...</h1>
           ) : (
             <>
               <Header/>
-              <div>
+              <div className='mx-[80px] my-auto'>
+                <Banner/>
                 {allProducts.isLoading ? <h1>Loading...</h1> : 
-                  <div className='p-6 grid grid-cols-1 gap-x-5 gap-y-3 justify-items-center sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'>
+                <div className="my-[20px]">
+                  <h1 className="text-xl font-bold">
+                    New Releases
+                  </h1>
+                  <div className='flex gap-3 flex-wrap mt-[10px]'>
                     {allProducts?.data?.map((r)=>(
                       <Card 
                       productName={r.name} 
@@ -37,15 +39,34 @@ function Home() {
                       userImage={r?.user?.image}/>
                     ))}
                   </div>
+                </div>
                 }
+
               </div>
             </>
           )}
         </div>
-      </div>
-      
     </>
   );
 }
 
 export default Home;
+
+
+export function Banner() {
+  return (
+    <div 
+      className='w-full h-[120px] flex justify-center 
+      items-center p-2 mt-[20px]
+      bg-white text-black rounded shadow-md
+      '>
+      <h1>Banner</h1>
+    </div>
+  )
+}
+
+export function CardContainer(){
+  return(
+    <div>k</div>
+  )
+}

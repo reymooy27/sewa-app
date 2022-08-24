@@ -42,7 +42,7 @@ export default function Profile() {
         {myOrders.isLoading ? <h1>Loading...</h1> : 
           <div>
             {myOrders?.data?.map(order=>(
-              <div key={order.id} className="w-[300px] h-[80px] p-3 m-1 rounded bg-white">
+              <div key={order.id} className="w-[300px] h-[80px] p-3 m-1 rounded bg-white text-black">
                 <p>Product Name : {order.product.name}</p>
                 <p>Seller : {order.orderTo.name}</p>
               </div>
