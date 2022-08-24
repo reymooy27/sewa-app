@@ -43,10 +43,11 @@ export default function Profile() {
         {myOrders.isLoading ? <h1>Loading...</h1> : 
           <div>
             {myOrders?.data?.map(order=>(
-              <div key={order.id} className="w-[300px] h-[80px] p-3 m-1 rounded bg-white text-black">
-                <p>Product Name : {order.product.name}</p>
-                <p>Seller : {order.orderTo.name}</p>
-              </div>
+              <Order 
+                key={order.id}
+                productName = {order.product.name}
+                orderTo = {order.orderTo.name}
+              />
             ))}
           </div>
         }
@@ -64,3 +65,12 @@ Profile.getLayout = function getLayout(page: ReactElement){
 }
 
 Profile.auth = true
+
+export function Order({productName, orderTo}){
+  return (
+    <div className="w-[300px] h-[80px] p-3 m-1 rounded bg-white text-black shadow-md">
+      <p>Product Name : {productName}</p>
+      <p>Seller : {orderTo}</p>
+    </div>
+  )
+}
