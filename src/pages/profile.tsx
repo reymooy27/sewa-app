@@ -27,8 +27,8 @@ export default function Profile() {
             productName={product.name} 
             href={`/products/${product.id}`} 
             key={product.id} 
-            userName={product?.user?.name} 
-            userImage={product?.user?.image}/>
+            userName={product?.user?.name!} 
+            userImage={product?.user?.image!}/>
           ))}
         </div>
       }

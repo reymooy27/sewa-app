@@ -2,7 +2,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-export default function Card({productName, href, userName, userImage}) {
+export type CardComponentType = {
+  productName : string,
+  href: string,
+  userName: string | null | undefined,
+  userImage: string | null | undefined
+}
+
+export default function Card({productName, href, userName, userImage}: CardComponentType) {
   return (
       <Link href={href}>
         <a className='w-[150px] h-[250px] rounded p-[10px] flex flex-col grow

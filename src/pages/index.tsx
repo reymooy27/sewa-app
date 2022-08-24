@@ -35,8 +35,8 @@ function Home() {
                       productName={r.name} 
                       href={`/products/${r.id}`} 
                       key={r.id} 
-                      userName={r?.user?.name} 
-                      userImage={r?.user?.image}/>
+                      userName={r?.user?.name!} 
+                      userImage={r?.user?.image!}/>
                     ))}
                   </div>
                 </div>
