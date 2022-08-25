@@ -34,7 +34,7 @@ export default function MyShop() {
 
       <CardContainer>
         {myProducts?.data?.length! < 1 && <h1>No products, create one</h1>}
-          {myProducts?.data?.map((product)=>(
+          {myProducts?.data?.map((product: any)=>(
             <Card 
               productName={product.name} 
               shopName={product.shop.name}
@@ -48,7 +48,7 @@ export default function MyShop() {
         {myShopOrders.isLoading ? <h1>Loading...</h1>
         :
           myShopOrders?.data?.length! < 1 ? <h1>No Orders</h1>
-          : myShopOrders.data?.map(order=>(
+          : myShopOrders.data?.map((order: any)=>(
             <Order 
               key={order.id} 
               productName={order?.product?.name}

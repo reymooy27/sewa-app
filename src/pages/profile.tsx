@@ -30,7 +30,7 @@ export default function Profile() {
       <div>
         {myOrders.isLoading ? <h1>Loading...</h1> : 
           <div>
-            {myOrders?.data?.map(order=>(
+            {myOrders?.data?.map((order: any)=>(
               <Order 
                 key={order.id}
                 productName = {order?.product?.name}
