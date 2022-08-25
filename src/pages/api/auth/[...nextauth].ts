@@ -9,7 +9,7 @@ const THIRTY_DAYS = 30 * 24 * 60 * 60;
 const THIRTY_MINUTES = 30 * 60;
 
 export const authOptions: NextAuthOptions = {
-  secret: "lin",
+  secret: process.env.SECRET,
   session: {
     strategy: "database",
     maxAge: THIRTY_DAYS,
@@ -17,8 +17,8 @@ export const authOptions: NextAuthOptions = {
   },
   providers: [
     GoogleProvider({
-      clientId: "161861232631-tul7mmr1asjh8s8smo5ka0vkaojm01ql.apps.googleusercontent.com",
-      clientSecret: "GOCSPX-\_xfd7M4gPOXXG4X9dIKbpY3FA84I",
+      clientId: process.env.GOOGLE_ID!,
+      clientSecret: process.env.GOOGLE_SECRET!,
     }),
   ],
   pages: {
