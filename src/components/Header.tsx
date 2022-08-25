@@ -19,7 +19,7 @@ export default function Header() {
           { session !== null ?
             <Link href="/profile">
               <a>
-                <Image src={session?.user?.image} alt='profile' width={20} height={20}/>
+                <Image src={session?.user?.image!} alt='profile' width={20} height={20}/>
                 <span>{session?.user?.name}</span>
               </a>
             </Link>
