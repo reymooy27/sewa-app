@@ -29,8 +29,14 @@ export const authOptions: NextAuthOptions = {
       return baseUrl;
     },
     async session({session, token, user}){
+      const shop = await prisma.shop.findUnique({
+        where:{
+          userId: user?.id
+        }
+      })
       if (session !== undefined) {
         session.user!.id = user?.id
+        session.user!.shopId = shop ? shop?.id : null
         return session
       }
       return session
