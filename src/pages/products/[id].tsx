@@ -33,7 +33,7 @@ export default function Rent() {
   const handleRent = ()=>{
     if(!session) return router.push('/login')
     if(product !== undefined){
-      orderMutation.mutate({productId: id, orderToUserId: product.data?.userId}, {
+      orderMutation.mutate({productId: id, shopId: product.data?.shopId!}, {
         onSuccess(data, variables, context) {
           window.alert(data)
         },
@@ -58,7 +58,7 @@ export default function Rent() {
             <p>{product?.data?.amount?.toString()}</p>
           </div>
           
-          { session?.user?.id === product?.data?.userId ? 
+          { session?.user?.shopId === product?.data?.shopId ? 
             <>
               <div>
                 <button onClick={handleDelete} className='w-[100px] h-[50px] bg-red-500'>Delete</button>
