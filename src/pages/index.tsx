@@ -8,10 +8,17 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CardContainer from "../components/CardContainer";
+import { Product } from "@prisma/client";
 
 function Home() {
   const { status } = useSession();
   const allProducts = trpc.useQuery(['product.get-products'])
+
+  type ProductWithShop = Product & {
+    shop:{
+      name: string
+    }
+  }
 
   return (
     <>
@@ -33,7 +40,7 @@ function Home() {
                     New Releases
                   </h1>
                   <CardContainer>
-                    {allProducts?.data?.map((product)=>(
+                    {allProducts?.data?.map((product: ProductWithShop)=>(
                       <Card 
                       productName={product.name} 
                       shopName={product.shop.name} 
