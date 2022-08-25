@@ -33,13 +33,13 @@ function Home() {
                     New Releases
                   </h1>
                   <CardContainer>
-                    {allProducts?.data?.map((r)=>(
+                    {allProducts?.data?.map((product)=>(
                       <Card 
-                      productName={r.name} 
-                      href={`/products/${r.id}`} 
-                      key={r.id} 
-                      userName={r?.user?.name!} 
-                      userImage={r?.user?.image!}/>
+                      productName={product.name} 
+                      shopName={product.shop.name} 
+                      href={`/products/${product.id}`} 
+                      key={product.id} 
+                      />
                     ))}
                   </CardContainer>
                 </div>
