@@ -8,11 +8,9 @@ export const productRouter = createRouter()
   async resolve({ctx}){
     const allProducts = await ctx?.prisma?.product.findMany({
       include:{
-        user:{
+        shop: {
           select:{
-            id: true,
-            name: true,
-            image: true
+            name: true
           }
         }
       }
@@ -31,6 +29,13 @@ export const productRouter = createRouter()
       const product = await ctx?.prisma?.product.findUnique({
         where:{
           id: input.id
+        },
+        include:{
+          shop: {
+            select:{
+              name: true
+            }
+          }
         }
       })
       return product
@@ -52,20 +57,27 @@ export const productRouter = createRouter()
     }
     return next()
 })
+.middleware(async ({ctx,next})=>{
+  if(!ctx?.session?.user?.shopId!){
+    throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'You dont have shop, crate one'
+    })
+  }
+  return next()
+})
 .query('get-my-products',{
   async resolve({ctx}){
     try {
       const myProducts = ctx?.prisma?.product.findMany(
         {
           where:{
-            userId: ctx?.session?.user?.id
+            shopId: ctx?.session?.user?.shopId!
           },
           include:{
-            user:{
+            shop: {
               select:{
-                id: true,
-                name: true,
-                image: true,
+                name: true
               }
             }
           }
@@ -92,7 +104,7 @@ export const productRouter = createRouter()
           data:{
             name: input.name,
             price: input.price,
-            userId: ctx?.session?.user?.id
+            shopId: ctx?.session?.user?.shopId!
           }
         })
       return createdProduct
@@ -114,7 +126,7 @@ export const productRouter = createRouter()
         const product = await ctx?.prisma?.product.findFirst({
           where:{
             id: input.id,
-            userId: ctx?.session?.user?.id
+            shopId: ctx?.session?.user?.shopId!
           }
         })
 
