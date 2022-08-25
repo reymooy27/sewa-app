@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "vercel-build": "npx prisma generate && next build",
+    "prisma:generate": "npx prisma generate",
     "lint": "next lint"
   },
   "dependencies": {
