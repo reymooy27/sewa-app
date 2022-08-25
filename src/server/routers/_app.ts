@@ -2,6 +2,7 @@ import { createRouter } from '../createRouter';
 import { productRouter } from './productRouter';
 import superjson from 'superjson';
 import { orderRouter } from './orderRouters';
+import { shopRouter } from './shopRouters';
 
 export const appRouter = createRouter()
   .transformer(superjson)
@@ -12,5 +13,6 @@ export const appRouter = createRouter()
   })
   .merge('product.', productRouter)
   .merge('order.', orderRouter)
+  .merge('shop.', shopRouter)
 
 export type AppRouter = typeof appRouter;
