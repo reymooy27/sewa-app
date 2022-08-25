@@ -16,11 +16,6 @@ export const orderRouter = createRouter()
   async resolve({ctx}){
     const allOrders = await ctx?.prisma?.order?.findMany({
       include:{
-        orderTo:{
-          select:{
-            name: true,
-          }
-        },
         user:{
           select:{
             name: true
@@ -64,16 +59,16 @@ export const orderRouter = createRouter()
         userId: ctx?.session?.user?.id!
       },
       include:{
-        orderTo: {
+        product:{
           select:{
             id: true,
             name: true
           }
         },
-        product:{
+        shop:{
           select:{
-            id: true,
-            name: true
+            name: true,
+            id: true
           }
         }
       }
@@ -88,19 +83,56 @@ export const orderRouter = createRouter()
     
   }
 })
+.query('get-my-shop-orders',{
+  async resolve({ctx}){
+    try {
+      const myShopOrders = await ctx.prisma?.order.findMany({
+      where:{
+        shopId: ctx?.session?.user?.shopId!
+      },
+      include:{
+        product:{
+          select:{
+            id: true,
+            name: true
+          }
+        },
+        user:{
+          select:{
+            name: true,
+            image: true
+          }
+        },
+        shop:{
+          select:{
+            name: true,
+            id: true
+          }
+        }
+      }
+    })
+    return myShopOrders
+    } catch (error) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Cannot find what you looking for',
+      })
+    }
+    
+  }
+})
 .mutation('create',{
   input: z.object({
     productId: z.string(),
-    orderToUserId: z.string()
+    shopId: z.string(),
   }),
   async resolve({input, ctx}){
-    // if(ctx.session.user.id ===)
     try {
       const newOrder = await ctx?.prisma?.order.create({
         data:{
-          orderToUserId: input.orderToUserId,
           userId: ctx.session?.user?.id!,
           productId: input.productId,
+          shopId: input.shopId
         }
       })
       return newOrder
