@@ -2,14 +2,11 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import React, { ReactElement } from "react";
-import Card from "../components/Card";
-import CardContainer from "../components/CardContainer";
 import Layout from "../components/layout";
 import { trpc } from "../utils/trpc";
 
 export default function Profile() {
 
-  const myProducts = trpc.useQuery(['product.get-my-products'])
   const myOrders = trpc.useQuery(['order.get-my-orders'])
   
   const {data: session} = useSession()
@@ -19,26 +16,17 @@ export default function Profile() {
       <Head>
         <title>Profile</title>
       </Head>
-      <h1>My products</h1>
-      {myProducts.isLoading ? <h1>Loading...</h1> : 
-        <CardContainer>
-          {myProducts?.data?.length! < 1 && <h1>No products, create one</h1>}
-          {typeof myProducts !== 'string' && myProducts?.data?.map((product)=>(
-            <Card 
-            productName={product.name} 
-            href={`/products/${product.id}`} 
-            key={product.id} 
-            userName={product?.user?.name!} 
-            userImage={product?.user?.image!}/>
-          ))}
-        </CardContainer>
-      }
 
-      {session && <Link href='/products/create'>
-        <a className='block w-[200px] h-[40px] bg-yellow-400 p-1 rounded text-center'>Create Product</a>
+      {session?.user?.shopId! ? 
+        <Link href={`/shop/${session?.user?.shopId!}`}>
+          <a>MyShop</a>
+      </Link>
+      :
+        <Link href='/shop/create'>
+        <a>Create Shop</a>
       </Link>}
 
-      <h1>My Orders</h1>
+      <h1 className="mt-5">My Orders</h1>
       <div>
         {myOrders.isLoading ? <h1>Loading...</h1> : 
           <div>
@@ -46,7 +34,6 @@ export default function Profile() {
               <Order 
                 key={order.id}
                 productName = {order.product.name}
-                orderTo = {order.orderTo.name}
               />
             ))}
           </div>
@@ -66,11 +53,15 @@ Profile.getLayout = function getLayout(page: ReactElement){
 
 Profile.auth = true
 
-export function Order({productName, orderTo}){
+export type OrderComponentProps = {
+  productName: string
+}
+
+export function Order({productName}: OrderComponentProps){
   return (
     <div className="w-[300px] h-[80px] p-3 m-1 rounded bg-white text-black shadow-md">
       <p>Product Name : {productName}</p>
-      <p>Seller : {orderTo}</p>
+      {/* <p>Seller : {orderTo}</p> */}
     </div>
   )
 }
