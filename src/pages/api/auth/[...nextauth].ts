@@ -31,7 +31,7 @@ export const authOptions: NextAuthOptions = {
     async session({session, token, user}){
       const shop = await prisma.shop.findUnique({
         where:{
-          userId: user?.id
+          userId: user?.id!
         }
       })
       if (session !== undefined) {
