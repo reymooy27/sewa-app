@@ -5,11 +5,13 @@ import Card from '../../components/Card'
 import CardContainer from '../../components/CardContainer'
 import Layout from '../../components/layout'
 import { trpc } from '../../utils/trpc'
+import { Order } from '../profile'
 
 export default function MyShop() {
 
   const myShop = trpc.useQuery(['shop.get-my-shop'])
   const myProducts = trpc.useQuery(['product.get-my-products'])
+  const myShopOrders = trpc.useQuery(['order.get-my-shop-orders'])
 
   return (
     <>
@@ -41,6 +43,21 @@ export default function MyShop() {
             />
           ))}
       </CardContainer>
+
+      <div className='mt-8'>
+        {myShopOrders.isLoading ? <h1>Loading...</h1>
+        :
+          myShopOrders?.data?.length! < 1 ? <h1>No Orders</h1>
+          : myShopOrders.data?.map(order=>(
+            <Order 
+              key={order.id} 
+              productName={order?.product?.name}
+              seller={order?.shop?.name}
+              buyer={order?.user?.name}
+            />
+          ))
+        }
+      </div>
     </>
   )
 }
