@@ -1,4 +1,4 @@
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -6,6 +6,10 @@ import React from 'react'
 export default function Header() {
 
   const {data:session, status} = useSession()
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
 
   return (
     <div className='flex items-center justify-between w-full h-[50px] 
@@ -17,12 +21,15 @@ export default function Header() {
         </div>
         <div>
           { session !== null ?
+          <>
             <Link href="/profile">
               <a>
                 <Image src={session?.user?.image!} alt='profile' width={20} height={20}/>
                 <span>{session?.user?.name}</span>
               </a>
             </Link>
+            <button onClick={handleSignOut}>SignOut</button>
+          </>
             :
             <Link href="/login">
               <a className="text-xl">Login</a>
