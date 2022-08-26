@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Head from 'next/head'
 import { trpc } from "../../utils/trpc";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 export default function Create() {
+  const {data: session} = useSession()
+
   const [name, setName] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
 
@@ -10,6 +14,8 @@ export default function Create() {
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(false)
 
   const mutation = trpc.useMutation(['product.create'])
+
+  const router = useRouter()
 
   useEffect(()=>{
     if(name === '' && price === 0){
@@ -31,7 +37,7 @@ export default function Create() {
     mutation.mutate({name,price},{
       onSuccess: (data)=>{
         setIsSubmittting(false)
-        typeof data !== 'string' ? window.alert(data?.name) : window.alert(data)
+        router.push(`/shop/${session?.user.shopId}`)
       },
       onError: (error)=>{
         setIsSubmittting(false)

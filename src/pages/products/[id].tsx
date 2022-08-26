@@ -22,7 +22,7 @@ export default function Rent() {
     mutation.mutate({id}, {
       onSuccess(data, variables, context) {
         window.alert(data)
-        router.push('/profile')
+        router.push(`/shop/${session?.user.shopId}`)
       },
       onError(error, variables, context) {
         window.alert('error')
