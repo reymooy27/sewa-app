@@ -17,8 +17,9 @@ export const authOptions: NextAuthOptions = {
   },
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_ID!,
-      clientSecret: process.env.GOOGLE_SECRET!,
+      // cannot access from env variabel
+      clientId: "161861232631-tul7mmr1asjh8s8smo5ka0vkaojm01ql.apps.googleusercontent.com",
+      clientSecret: "GOCSPX-\_xfd7M4gPOXXG4X9dIKbpY3FA84I",
     }),
   ],
   pages: {
